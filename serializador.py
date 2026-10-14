@@ -3,6 +3,7 @@ def convertDoc (documento) -> dict:
         "id": str(documento["_id"]),
         "nome": documento["nome"],
         "idade": documento["idade"],
+        "matricula": documento["matricula"],
         "matriculaAtiva": documento["matriculaAtiva"],
     }
 

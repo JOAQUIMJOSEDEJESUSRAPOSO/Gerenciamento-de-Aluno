@@ -23,7 +23,7 @@ async def adicionaAluno(aluno: Aluno):
 
 @app.get("/alunos/")
 async def listaAlunos():
-    alunos = await collection.find().to_list(10)
+    alunos = await collection.find().to_list()
     return {"alunos": convertDoclist(alunos)}
 
 @app.put("/alunos/{nome}")
@@ -36,4 +36,12 @@ async def atualizarAluno(nome: str, aluno: Aluno):
 
     if atualizarAluno:
         return {"message": "Aluno Atualizado", "aluno": convertDoc(atualizarAluno)}
+    raise HTTPException(status_code=404, detail=f"Item with name {nome} not found")
+
+@app.delete("/alunos/{nome}")
+async def excluiAluno(nome: str):
+    deletaAluno = await collection.delete_one({"nome": nome})
+
+    if deletaAluno:
+        return {"message": "Aluno Excluido", "aluno": nome}
     raise HTTPException(status_code=404, detail=f"Item with name {nome} not found")
