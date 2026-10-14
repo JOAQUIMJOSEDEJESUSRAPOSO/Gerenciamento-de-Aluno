@@ -26,6 +26,15 @@ async def listaAlunos():
     alunos = await collection.find().to_list()
     return {"alunos": convertDoclist(alunos)}
 
+@app.get("/alunos/{nome}")
+async def consultarAluno(nome: str):
+    aluno = await collection.find_one({"nome": nome})
+    if aluno:
+        return{"aluno": convertDoc(aluno)}
+    raise HTTPException(status_code=404, detail=f"Item width name {nome} not foud")
+
+
+
 @app.put("/alunos/{nome}")
 async def atualizarAluno(nome: str, aluno: Aluno):
     atualizarAluno = await collection.find_one_and_update(
